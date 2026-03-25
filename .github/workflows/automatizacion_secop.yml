@@ -23,7 +23,7 @@ jobs:
           pip install pandas requests pyarrow
 
       - name: 🚀 Ejecutar descarga 3 meses
-        run: python scripts/descarga_3meses_datos.py
+        run: python scripts/descarga_3mes_datos.py
 
       - name: 💾 Subir cambios
         run: |
