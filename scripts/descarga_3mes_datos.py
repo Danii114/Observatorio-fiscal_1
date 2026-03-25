@@ -49,7 +49,8 @@ print("Filas:", df.shape[0])
 print("Columnas:", df.shape[1])
 
 # 🔹 guardar parquet
-df.to_parquet("secop_3_meses.parquet", engine="pyarrow")
+mes = datetime.today().strftime("%Y-%m")
+df.to_parquet(f"secop_{mes}.parquet", engine="pyarrow")
 
 print("💾 Archivo guardado: secop_3_meses.parquet")
 
