@@ -5,6 +5,9 @@ on:
     - cron: '0 11 * * *'  # todos los días
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # opcional, evita advertencias Node.js 20
+
 jobs:
   run-secoppipeline:
     runs-on: ubuntu-latest
@@ -25,10 +28,8 @@ jobs:
       - name: 🚀 Ejecutar descarga 3 meses
         run: python scripts/descarga_3mes_datos.py
 
-      - name: 💾 Subir cambios
+      - name: 💾 Subir cambios automáticamente
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
-          git add .
-          git commit -m "Actualización automática datos SECOP" || echo "No changes"
-          git push
+          git add . || echo "No changes to add"
+          git commit -m "Actualización automática datos SECOP" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
