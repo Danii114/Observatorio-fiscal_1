@@ -1,11 +1,12 @@
 name: SECOP Automatizado
 
+# Ejecutar todos los días a las 11:00 UTC
 on:
   schedule:
-    - cron: '0 11 * * *'  # Ejecuta todos los días a las 11:00 UTC
+    - cron: '0 11 * * *'
   workflow_dispatch:
 
-# Forzar Node.js 24 y evitar advertencias
+# Forzar Node.js 24
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -14,34 +15,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Clonar repositorio
+      # Clonar repositorio
       - name: 📥 Clonar repositorio
         uses: actions/checkout@v3
 
-      # 2️⃣ Instalar Python
+      # Configurar Python
       - name: 🐍 Configurar Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      # 3️⃣ Instalar librerías necesarias
+      # Instalar librerías necesarias
       - name: 📦 Instalar librerías
         run: |
+          pip install --upgrade pip
           pip install pandas requests pyarrow
 
-      # 4️⃣ Ejecutar script de descarga
+      # Ejecutar script de descarga
       - name: 🚀 Ejecutar descarga 3 meses
         run: python scripts/descarga_3mes_datos.py
 
-      # 5️⃣ Subir cambios automáticamente usando token seguro
+      # Subir cambios automáticamente sin fallar si no hay cambios
       - name: 💾 Subir cambios automáticamente
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
+
+          # Traer cambios del remoto primero
           git fetch origin main
           git reset --soft origin/main
+
           git add .
+          # Solo hacer commit si hay cambios
           git diff-index --quiet HEAD || git commit -m "Actualización automática datos SECOP"
+          # Push usando token seguro
           git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
