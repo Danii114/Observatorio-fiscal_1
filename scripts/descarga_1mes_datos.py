@@ -29,8 +29,3 @@ df.to_parquet("secop_ultimo_mes.parquet", engine="pyarrow")
 print("✅ Último mes descargado")
 
 
-df = pd.read_parquet("secop_ultimo_mes.parquet")
-
-print(df.head())
-print(df.shape)
-df.to_csv("secop_ultimo_mes.csv", index=False)
