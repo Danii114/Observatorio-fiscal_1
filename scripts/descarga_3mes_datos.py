@@ -54,7 +54,3 @@ df.to_parquet(f"secop_{mes}.parquet", engine="pyarrow")
 
 print("💾 Archivo guardado: secop_3_meses.parquet")
 
-# 🔹 opcional: CSV para revisar
-df.to_csv("secop_3_meses.csv", index=False)
-
-print("📄 CSV guardado para visualización")
