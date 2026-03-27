@@ -1,13 +1,13 @@
 import pandas as pd
 
-# 🔹 Cargar datos
+#Cargar datos
 df = pd.read_parquet("secop_3_meses.parquet")
 df['cuantia_contrato'] = pd.to_numeric(df['cuantia_contrato'], errors='coerce')
 
-print("🚀 INICIANDO EXPLORACIÓN DE DATOS\n")
+print("INICIANDO EXPLORACIÓN DE DATOS\n")
 
 # =========================================================
-# 📊 1. VISIÓN GENERAL
+#  1. VISIÓN GENERAL
 # =========================================================
 print("📊 DIMENSIÓN DEL DATASET")
 print(df.shape)
@@ -30,13 +30,13 @@ print("\n📊 PORCENTAJE DE NULOS")
 porcentaje_nulos = (df.isnull().sum() / len(df)) * 100
 print(porcentaje_nulos.sort_values(ascending=False).head(10))
 
-# 🔥 IMPORTANTE: usar UID para duplicados
+#  IMPORTANTE: usar UID para duplicados
 print("\n🆔 DUPLICADOS POR UID")
 print(df['uid'].duplicated().sum())
 
 
 # =========================================================
-# 🧪 3. VARIABLES CATEGÓRICAS
+#  3. VARIABLES CATEGÓRICAS
 # =========================================================
 print("\n📊 MODALIDAD DE CONTRATACIÓN")
 print(df['modalidad_de_contratacion'].value_counts())
@@ -87,7 +87,7 @@ print(df.groupby('nombre_entidad')['cuantia_contrato']
 
 
 # =========================================================
-# 🧠 7. CONCENTRACIÓN DEL GASTO
+#  7. CONCENTRACIÓN DEL GASTO
 # =========================================================
 total = df['cuantia_contrato'].sum()
 
@@ -99,7 +99,7 @@ print("Top 10 entidades concentran:", (top10 / total) * 100, "%")
 
 
 # =========================================================
-# ⚠️ 8. DETECCIÓN DE PROBLEMAS
+#  8. DETECCIÓN DE PROBLEMAS
 # =========================================================
 print("\n📅 FECHAS FALTANTES")
 print(df[['fecha_de_firma_del_contrato',
@@ -114,7 +114,7 @@ print(df['cuantia_contrato'].isnull().sum())
 
 
 # =========================================================
-# 📊 9. ANÁLISIS TEMPORAL
+#  9. ANÁLISIS TEMPORAL
 # =========================================================
 df['fecha'] = pd.to_datetime(df['fecha_de_cargue_en_el_secop'], errors='coerce')
 
